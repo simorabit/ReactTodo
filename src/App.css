@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.iconBtn {
+  transition: all 0.3s !important;
+}
+
+.iconBtn:hover {
+  background-color: rgb(222, 222, 222) !important;
+}
+
+.todoCard {
+  transition: all 0.2s !important;
+}
+.todoCard:hover {
+  padding-bottom: 15px;
+  padding-top: 15px;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.3);
+}
