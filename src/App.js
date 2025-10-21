@@ -1,8 +1,10 @@
 import logo from "./logo.svg";
 import "./App.css";
 import TodoList from "./components/TodoList";
-import { todosContext } from "../contexts/todosContext";
+
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+
 import { TodosContext } from "./contexts/todosContext";
 const InitTodos = [
   {

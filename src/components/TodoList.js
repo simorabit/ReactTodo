@@ -17,18 +17,13 @@ import { Description } from "@mui/icons-material";
 import { useState } from "react";
 import { useContext } from "react";
 import { TodosContext } from "../contexts/todosContext";
+import { v4 as uuidv4 } from "uuid";
+
 export default function TodoList() {
+  const { todos, setTodos } = useContext(TodosContext);
+
   const [inputFiled, setInputFiled] = useState("");
-  const [todos, setTodos] = useState(InitTodos);
-  function handelCheck(id) {
-    const newTodos = todos.map((t) => {
-      if (t.id == id) {
-        t.isCompleted = !t.isCompleted;
-      }
-      return t;
-    });
-    setTodos(newTodos);
-  }
+
   function Addtodo() {
     const element = {
       id: uuidv4(),
@@ -72,9 +67,7 @@ export default function TodoList() {
           </ToggleButtonGroup>
           {/* ALL TODOS */}
           {todos.map((todo) => {
-            return (
-              <Todo key={todo.id} item={todo} handelCheck={handelCheck}></Todo>
-            );
+            return <Todo key={todo.id} item={todo}></Todo>;
           })}
           {/* */}
           <Grid container spacing={3} style={{ marginTop: "15px" }}>

@@ -8,9 +8,60 @@ import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-export default function Todo({ item, handelCheck }) {
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
+import { TodosContext } from "../contexts/todosContext";
+import { useContext, useState } from "react";
+
+export default function Todo({ item }) {
+  const { todos, setTodos } = useContext(TodosContext);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  function handleClose() {
+    setShowDeleteDialog(false);
+  }
+
+  function deleteTodo() {
+    let newTodos = todos.filter((t) => {
+      return item.id != t.id;
+    });
+    setTodos(newTodos);
+  }
+
+  function handelCheck() {
+    const newTodos = todos.map((t) => {
+      if (t.id == item.id) {
+        t.isCompleted = !t.isCompleted;
+      }
+      return t;
+    });
+    setTodos(newTodos);
+  }
+
   return (
     <>
+      <Dialog
+        style={{ direction: "rtl" }}
+        open={showDeleteDialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">هل ترغب في حدف المهمة</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            لن تتمكن من استرجاعها
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>الغاء</Button>
+          <Button onClick={deleteTodo}> نعم تاكيد الحدف</Button>
+        </DialogActions>
+      </Dialog>
       <Card
         className="todoCard"
         sx={{
@@ -39,7 +90,7 @@ export default function Todo({ item, handelCheck }) {
             >
               <IconButton
                 onClick={() => {
-                  handelCheck(item.id);
+                  handelCheck();
                 }}
                 className="iconBtn"
                 style={{
@@ -65,6 +116,9 @@ export default function Todo({ item, handelCheck }) {
                 <EditIcon></EditIcon>
               </IconButton>
               <IconButton
+                onClick={() => {
+                  setShowDeleteDialog(true);
+                }}
                 className="iconBtn"
                 style={{
                   color: "#b23c17",
@@ -72,7 +126,6 @@ export default function Todo({ item, handelCheck }) {
                   border: "solid #b23c17 3px",
                 }}
                 aria-label="delete"
-                disabled
                 color="primary"
               >
                 <DeleteIcon></DeleteIcon>
